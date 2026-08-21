@@ -26,26 +26,15 @@ export default async function handler(req, res) {
 
     if (!AI_API_KEY) {
         return res.status(400).json({
-            error: 'AI_API_KEY belum diisi di Environment Variables Vercel. Silakan tambahkan AI_API_KEY (misal dari Google AI Studio atau OpenAI).'
+            error: 'AI_API_KEY belum diisi di Environment Variables Vercel. Silakan isi API Key Google Gemini (AIzaSy...) atau OpenAI.'
         });
     }
 
     // Guard against localhost on cloud
     if (AI_API_BASE_URL.includes('localhost') || AI_API_BASE_URL.includes('127.0.0.1')) {
         return res.status(400).json({
-            error: 'AI_API_BASE_URL tidak boleh "localhost" di Vercel. Karena Vercel di cloud, gunakan https://generativelanguage.googleapis.com/v1beta/openai (untuk Google Gemini) atau https://api.openai.com/v1 (untuk OpenAI).'
+            error: 'AI_API_BASE_URL di Vercel tidak boleh localhost. Gunakan endpoint cloud seperti Google Gemini atau OpenAI.'
         });
-    }
-
-    // Auto-detect Google AI Studio Key
-    if (!AI_API_BASE_URL) {
-        if (AI_API_KEY.startsWith('AIzaSy') || AI_API_KEY.startsWith('AIza')) {
-            AI_API_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/openai';
-            if (!AI_MODEL || AI_MODEL === 'free-ai') AI_MODEL = 'gemini-1.5-flash';
-        } else {
-            AI_API_BASE_URL = 'https://api.openai.com/v1';
-            if (!AI_MODEL || AI_MODEL === 'free-ai') AI_MODEL = 'gpt-4o-mini';
-        }
     }
 
     try {
@@ -100,41 +89,74 @@ Instruksi Tugas:
 2. Jika user meminta IP kosong, prioritaskan memberikan IP yang bertanda [BEBAS/KOSONG] (status offline dan belum terdaftar di inventaris).
 3. Buat jawaban yang terstruktur rapi, elegan, gunakan format Markdown (tabel jika relevan, bullet points •, teks tebal), dan ramah dibaca di layar HP.`;
 
-        const messages = [
-            { role: 'system', content: systemPrompt },
-            ...history.slice(-6).map((h) => ({ role: h.role, content: h.content })),
-            { role: 'user', content: message.trim() }
-        ];
+        // Detect if Google Gemini API Key (starts with AIza...)
+        const isGoogleKey = AI_API_KEY.startsWith('AIza');
 
-        // Ensure endpoint has /chat/completions
-        const finalUrl = AI_API_BASE_URL.endsWith('/chat/completions')
-            ? AI_API_BASE_URL
-            : `${AI_API_BASE_URL}/chat/completions`;
+        let replyText = '';
 
-        // Call LLM API
-        const aiResponse = await fetch(finalUrl, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${AI_API_KEY}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: AI_MODEL,
-                messages,
-                stream: false
-            })
-        });
+        if (isGoogleKey) {
+            // Use native Google Gemini REST API (100% reliable for Gemini keys)
+            const modelName = AI_MODEL.includes('gemini') ? AI_MODEL : 'gemini-1.5-flash';
+            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${AI_API_KEY}`;
 
-        if (!aiResponse.ok) {
-            const errBody = await aiResponse.text();
-            console.error('AI API Error:', errBody);
-            return res.status(500).json({
-                error: `Gagal dari API AI (HTTP ${aiResponse.status}): ${errBody.substring(0, 300)}`
+            const contents = [
+                {
+                    role: 'user',
+                    parts: [{ text: `${systemPrompt}\n\nPertanyaan User:\n${message.trim()}` }]
+                }
+            ];
+
+            const geminiRes = await fetch(geminiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ contents })
             });
-        }
 
-        const aiData = await aiResponse.json();
-        const replyText = aiData?.choices?.[0]?.message?.content || 'Analisis selesai tanpa pesan tambahan.';
+            if (!geminiRes.ok) {
+                const errBody = await geminiRes.text();
+                return res.status(500).json({
+                    error: `Gagal dari Google Gemini (HTTP ${geminiRes.status}): ${errBody.substring(0, 300)}`
+                });
+            }
+
+            const geminiData = await geminiRes.json();
+            replyText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || 'Analisis selesai.';
+        } else {
+            // Use OpenAI-compatible endpoint
+            let targetBaseUrl = AI_API_BASE_URL || 'https://api.openai.com/v1';
+            const finalUrl = targetBaseUrl.endsWith('/chat/completions')
+                ? targetBaseUrl
+                : `${targetBaseUrl}/chat/completions`;
+
+            const messages = [
+                { role: 'system', content: systemPrompt },
+                ...history.slice(-6).map((h) => ({ role: h.role, content: h.content })),
+                { role: 'user', content: message.trim() }
+            ];
+
+            const aiResponse = await fetch(finalUrl, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${AI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    model: AI_MODEL || 'gpt-4o-mini',
+                    messages,
+                    stream: false
+                })
+            });
+
+            if (!aiResponse.ok) {
+                const errBody = await aiResponse.text();
+                return res.status(500).json({
+                    error: `Gagal dari API AI (HTTP ${aiResponse.status}): ${errBody.substring(0, 300)}`
+                });
+            }
+
+            const aiData = await aiResponse.json();
+            replyText = aiData?.choices?.[0]?.message?.content || 'Analisis selesai.';
+        }
 
         return res.status(200).json({
             reply: replyText,
