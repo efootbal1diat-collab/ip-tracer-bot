@@ -96,7 +96,10 @@ Instruksi Tugas:
 
         if (isGoogleKey) {
             // Use native Google Gemini REST API (100% reliable for Gemini keys)
-            const modelName = AI_MODEL.includes('gemini') ? AI_MODEL : 'gemini-1.5-flash';
+            let modelName = AI_MODEL;
+            if (!modelName || modelName === 'free-ai' || !modelName.includes('gemini')) {
+                modelName = 'gemini-1.5-flash';
+            }
             const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${AI_API_KEY}`;
 
             const contents = [
