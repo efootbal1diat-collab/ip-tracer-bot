@@ -1,0 +1,9 @@
+{
+  "name": "ip-tracer-mobile-ai",
+  "version": "1.0.0",
+  "description": "Mobile AI Chat Copilot for IP Tracer deployed on Vercel",
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "dependencies": {}
+}
