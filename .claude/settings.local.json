@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan *)",
+      "Bash(powershell -Command \"Get-Content 'storage\\\\logs\\\\laravel.log' -Tail 40\")",
+      "Bash(powershell -Command \"Measure-Command { nbtstat -A 172.16.250.8 } | Select-Object TotalSeconds\")",
+      "Bash(powershell -Command \"Measure-Command { nslookup 172.16.250.8 } | Select-Object TotalSeconds; Measure-Command { ping -a -n 1 -w 500 172.16.250.8 } | Select-Object TotalSeconds\")",
+      "Bash(powershell -Command \"arp -a | Select-String '172.16.250.7'\")",
+      "Bash(php test_scan.php)",
+      "Bash(tasklist *)",
+      "Bash(php *)",
+      "Bash(python3 -c ' *)",
+      "Bash(python3 *)",
+      "Bash(python *)"
+    ]
+  }
+}

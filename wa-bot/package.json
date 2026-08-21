@@ -1,0 +1,15 @@
+{
+  "name": "ip-tracer-wa-bot",
+  "version": "1.0.0",
+  "description": "WhatsApp AI Network Bot for IP Tracer",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@whiskeysockets/baileys": "^6.7.13",
+    "qrcode-terminal": "^0.12.0",
+    "pino": "^9.6.0"
+  }
+}
