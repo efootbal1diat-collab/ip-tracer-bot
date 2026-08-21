@@ -96,12 +96,14 @@ Instruksi Tugas:
 
         if (isGoogleKey) {
             // Use native Google Gemini REST API with automatic model fallback on 503
-            const fallbackModels = [
-                AI_MODEL.includes('gemini') ? AI_MODEL : 'gemini-1.5-flash',
+            const userModel = (AI_MODEL && AI_MODEL !== 'free-ai') ? AI_MODEL : 'gemini-2.0-flash';
+            const fallbackModels = Array.from(new Set([
+                userModel,
                 'gemini-2.0-flash',
+                'gemini-1.5-flash',
                 'gemini-1.5-flash-8b',
                 'gemini-1.5-pro'
-            ];
+            ]));
 
             const contents = [
                 {
