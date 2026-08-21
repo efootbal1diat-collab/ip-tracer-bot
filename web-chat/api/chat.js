@@ -22,18 +22,18 @@ export default async function handler(req, res) {
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
     let AI_API_BASE_URL = (process.env.AI_API_BASE_URL || '').trim().replace(/\/+$/, '');
     const AI_API_KEY = (process.env.AI_API_KEY || '').trim();
-    let AI_MODEL = (process.env.AI_MODEL || 'gemini-1.5-flash').trim();
+    let AI_MODEL = (process.env.AI_MODEL || 'gemini-3.6-flash').trim();
 
     if (!AI_API_KEY) {
         return res.status(400).json({
-            error: 'AI_API_KEY belum diisi di Environment Variables Vercel. Silakan isi API Key Google Gemini (AIzaSy...) atau OpenAI.'
+            error: 'AI_API_KEY belum diisi di Environment Variables Vercel.'
         });
     }
 
     // Guard against localhost on cloud
     if (AI_API_BASE_URL.includes('localhost') || AI_API_BASE_URL.includes('127.0.0.1')) {
         return res.status(400).json({
-            error: 'AI_API_BASE_URL di Vercel tidak boleh localhost. Gunakan endpoint cloud seperti Google Gemini atau OpenAI.'
+            error: 'AI_API_BASE_URL di Vercel tidak boleh "localhost". Masukkan URL publik cloud (misal https://api.openai.com/v1 atau URL OpenCode Mas).'
         });
     }
 
@@ -89,7 +89,7 @@ Instruksi Tugas:
 2. Jika user meminta IP kosong, prioritaskan memberikan IP yang bertanda [BEBAS/KOSONG] (status offline dan belum terdaftar di inventaris).
 3. Buat jawaban yang terstruktur rapi, elegan, gunakan format Markdown (tabel jika relevan, bullet points •, teks tebal), dan ramah dibaca di layar HP.`;
 
-        // Detect if Google Gemini API Key (starts with AIza...)
+        // Check if Google Key (starts with AIza...)
         const isGoogleKey = AI_API_KEY.startsWith('AIza');
 
         let replyText = '';
@@ -124,7 +124,8 @@ Instruksi Tugas:
                     const geminiRes = await fetch(geminiUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents })
+                        body: JSON.stringify({ contents }),
+                        signal: AbortSignal.timeout(45000)
                     });
 
                     if (geminiRes.ok) {
@@ -135,7 +136,7 @@ Instruksi Tugas:
                     } else {
                         const errBody = await geminiRes.text();
                         lastError = `HTTP ${geminiRes.status}: ${errBody}`;
-                        // If 503 / 429, try next model in fallback list
+                        // If 503 / 429 / 404, try next model in fallback list
                         if (geminiRes.status === 503 || geminiRes.status === 429 || geminiRes.status === 404) {
                             console.warn(`Model ${modelName} returned ${geminiRes.status}, falling back...`);
                             continue;
@@ -153,8 +154,12 @@ Instruksi Tugas:
                 });
             }
         } else {
-            // Use OpenAI-compatible endpoint
+            // Use custom / OpenCode / OpenAI-compatible endpoint
             let targetBaseUrl = AI_API_BASE_URL || 'https://api.openai.com/v1';
+            if (!targetBaseUrl.startsWith('http://') && !targetBaseUrl.startsWith('https://')) {
+                targetBaseUrl = `https://${targetBaseUrl}`;
+            }
+
             const finalUrl = targetBaseUrl.endsWith('/chat/completions')
                 ? targetBaseUrl
                 : `${targetBaseUrl}/chat/completions`;
@@ -165,28 +170,35 @@ Instruksi Tugas:
                 { role: 'user', content: message.trim() }
             ];
 
-            const aiResponse = await fetch(finalUrl, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${AI_API_KEY}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: AI_MODEL || 'gpt-4o-mini',
-                    messages,
-                    stream: false
-                })
-            });
+            try {
+                const aiResponse = await fetch(finalUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${AI_API_KEY}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: AI_MODEL || 'gpt-4o-mini',
+                        messages,
+                        stream: false
+                    }),
+                    signal: AbortSignal.timeout(45000)
+                });
 
-            if (!aiResponse.ok) {
-                const errBody = await aiResponse.text();
+                if (!aiResponse.ok) {
+                    const errBody = await aiResponse.text();
+                    return res.status(500).json({
+                        error: `Gagal dari API (${finalUrl} - HTTP ${aiResponse.status}): ${errBody.substring(0, 300)}`
+                    });
+                }
+
+                const aiData = await aiResponse.json();
+                replyText = aiData?.choices?.[0]?.message?.content || 'Analisis selesai.';
+            } catch (fetchErr) {
                 return res.status(500).json({
-                    error: `Gagal dari API AI (HTTP ${aiResponse.status}): ${errBody.substring(0, 300)}`
+                    error: `Gagal menghubungi endpoint AI (${finalUrl}): ${fetchErr.message}. Pastikan AI_API_BASE_URL dan koneksi internet endpoint valid.`
                 });
             }
-
-            const aiData = await aiResponse.json();
-            replyText = aiData?.choices?.[0]?.message?.content || 'Analisis selesai.';
         }
 
         return res.status(200).json({
