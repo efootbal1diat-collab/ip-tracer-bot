@@ -20,9 +20,33 @@ export default async function handler(req, res) {
 
     const GITHUB_REPO = process.env.GITHUB_REPO || 'efootbal1diat-collab/ip-tracer-bot';
     const GITHUB_TOKEN = process.env.GITHUB_TOKEN || '';
-    const AI_API_BASE_URL = (process.env.AI_API_BASE_URL || 'https://generativelanguage.googleapis.com/v1beta/openai').replace(/\/+$/, '');
-    const AI_API_KEY = process.env.AI_API_KEY || '';
-    const AI_MODEL = process.env.AI_MODEL || 'gemini-1.5-flash';
+    let AI_API_BASE_URL = (process.env.AI_API_BASE_URL || '').trim().replace(/\/+$/, '');
+    const AI_API_KEY = (process.env.AI_API_KEY || '').trim();
+    let AI_MODEL = (process.env.AI_MODEL || 'gemini-1.5-flash').trim();
+
+    if (!AI_API_KEY) {
+        return res.status(400).json({
+            error: 'AI_API_KEY belum diisi di Environment Variables Vercel. Silakan tambahkan AI_API_KEY (misal dari Google AI Studio atau OpenAI).'
+        });
+    }
+
+    // Guard against localhost on cloud
+    if (AI_API_BASE_URL.includes('localhost') || AI_API_BASE_URL.includes('127.0.0.1')) {
+        return res.status(400).json({
+            error: 'AI_API_BASE_URL tidak boleh "localhost" di Vercel. Karena Vercel di cloud, gunakan https://generativelanguage.googleapis.com/v1beta/openai (untuk Google Gemini) atau https://api.openai.com/v1 (untuk OpenAI).'
+        });
+    }
+
+    // Auto-detect Google AI Studio Key
+    if (!AI_API_BASE_URL) {
+        if (AI_API_KEY.startsWith('AIzaSy') || AI_API_KEY.startsWith('AIza')) {
+            AI_API_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/openai';
+            if (!AI_MODEL || AI_MODEL === 'free-ai') AI_MODEL = 'gemini-1.5-flash';
+        } else {
+            AI_API_BASE_URL = 'https://api.openai.com/v1';
+            if (!AI_MODEL || AI_MODEL === 'free-ai') AI_MODEL = 'gpt-4o-mini';
+        }
+    }
 
     try {
         // 1. Fetch latest IP data snapshot from GitHub
@@ -82,8 +106,13 @@ Instruksi Tugas:
             { role: 'user', content: message.trim() }
         ];
 
-        // Call LLM API (Google AI Studio / OpenAI / OmniRoute)
-        const aiResponse = await fetch(`${AI_API_BASE_URL}/chat/completions`, {
+        // Ensure endpoint has /chat/completions
+        const finalUrl = AI_API_BASE_URL.endsWith('/chat/completions')
+            ? AI_API_BASE_URL
+            : `${AI_API_BASE_URL}/chat/completions`;
+
+        // Call LLM API
+        const aiResponse = await fetch(finalUrl, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${AI_API_KEY}`,
@@ -100,8 +129,7 @@ Instruksi Tugas:
             const errBody = await aiResponse.text();
             console.error('AI API Error:', errBody);
             return res.status(500).json({
-                error: `Gagal memanggil AI (HTTP ${aiResponse.status}). Pastikan AI_API_KEY dan AI_API_BASE_URL sudah benar di Vercel.`,
-                raw: errBody
+                error: `Gagal dari API AI (HTTP ${aiResponse.status}): ${errBody.substring(0, 300)}`
             });
         }
 
@@ -117,7 +145,7 @@ Instruksi Tugas:
     } catch (err) {
         console.error('Server error:', err);
         return res.status(500).json({
-            error: 'Terjadi kendala pada server: ' + err.message
+            error: `Terjadi kendala pada server: ${err.message}`
         });
     }
 }
