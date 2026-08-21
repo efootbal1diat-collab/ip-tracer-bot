@@ -95,12 +95,13 @@ Instruksi Tugas:
         let replyText = '';
 
         if (isGoogleKey) {
-            // Use native Google Gemini REST API (100% reliable for Gemini keys)
-            let modelName = AI_MODEL;
-            if (!modelName || modelName === 'free-ai' || !modelName.includes('gemini')) {
-                modelName = 'gemini-1.5-flash';
-            }
-            const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${AI_API_KEY}`;
+            // Use native Google Gemini REST API with automatic model fallback on 503
+            const fallbackModels = [
+                AI_MODEL.includes('gemini') ? AI_MODEL : 'gemini-1.5-flash',
+                'gemini-2.0-flash',
+                'gemini-1.5-flash-8b',
+                'gemini-1.5-pro'
+            ];
 
             const contents = [
                 {
@@ -109,21 +110,43 @@ Instruksi Tugas:
                 }
             ];
 
-            const geminiRes = await fetch(geminiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ contents })
-            });
+            let lastError = null;
 
-            if (!geminiRes.ok) {
-                const errBody = await geminiRes.text();
-                return res.status(500).json({
-                    error: `Gagal dari Google Gemini (HTTP ${geminiRes.status}): ${errBody.substring(0, 300)}`
-                });
+            for (const modelName of fallbackModels) {
+                const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${AI_API_KEY}`;
+
+                try {
+                    const geminiRes = await fetch(geminiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents })
+                    });
+
+                    if (geminiRes.ok) {
+                        const geminiData = await geminiRes.json();
+                        replyText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || 'Analisis selesai.';
+                        lastError = null;
+                        break;
+                    } else {
+                        const errBody = await geminiRes.text();
+                        lastError = `HTTP ${geminiRes.status}: ${errBody}`;
+                        // If 503 / 429, try next model in fallback list
+                        if (geminiRes.status === 503 || geminiRes.status === 429 || geminiRes.status === 404) {
+                            console.warn(`Model ${modelName} returned ${geminiRes.status}, falling back...`);
+                            continue;
+                        }
+                        break;
+                    }
+                } catch (e) {
+                    lastError = e.message;
+                }
             }
 
-            const geminiData = await geminiRes.json();
-            replyText = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text || 'Analisis selesai.';
+            if (lastError && !replyText) {
+                return res.status(500).json({
+                    error: `Gagal dari Google Gemini: ${lastError.substring(0, 300)}`
+                });
+            }
         } else {
             // Use OpenAI-compatible endpoint
             let targetBaseUrl = AI_API_BASE_URL || 'https://api.openai.com/v1';
