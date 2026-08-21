@@ -95,14 +95,17 @@ Instruksi Tugas:
         let replyText = '';
 
         if (isGoogleKey) {
-            // Use native Google Gemini REST API with automatic model fallback on 503
-            const userModel = (AI_MODEL && AI_MODEL !== 'free-ai') ? AI_MODEL : 'gemini-2.0-flash';
+            // Use native Google Gemini REST API with automatic model fallback
+            let userModel = (AI_MODEL && AI_MODEL !== 'free-ai') ? AI_MODEL : 'gemini-3.6-flash';
+            if (userModel === 'gemini-2.0-flash') {
+                userModel = 'gemini-3.6-flash';
+            }
             const fallbackModels = Array.from(new Set([
                 userModel,
-                'gemini-2.0-flash',
-                'gemini-1.5-flash',
-                'gemini-1.5-flash-8b',
-                'gemini-1.5-pro'
+                'gemini-3.6-flash',
+                'gemini-3.6-pro',
+                'gemini-2.5-flash',
+                'gemini-1.5-flash'
             ]));
 
             const contents = [
