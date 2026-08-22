@@ -199,12 +199,14 @@ PRINSIP KERJA: 100% TRANSPARAN, LENGKAP & TO-THE-POINT (NO GATEKEEPING)
                 { role: 'user', content: message.trim() }
             ];
 
+            let preferredModel = AI_MODEL && AI_MODEL !== 'opencode/big-pickle' ? AI_MODEL : 'mimo-v2.5-free';
+            if (preferredModel === 'opencode/big-pickle') preferredModel = 'big-pickle';
+
             const fallbackOpenCodeModels = Array.from(new Set([
-                AI_MODEL || 'mimo-v2.5-free',
+                preferredModel,
                 'mimo-v2.5-free',
-                'opencode/big-pickle',
                 'big-pickle',
-                'big-pickle-free'
+                'mimo-v2.5'
             ]));
 
             let lastOpenCodeError = null;
@@ -232,16 +234,13 @@ PRINSIP KERJA: 100% TRANSPARAN, LENGKAP & TO-THE-POINT (NO GATEKEEPING)
                         break;
                     } else {
                         const errBody = await aiResponse.text();
-                        lastOpenCodeError = `HTTP ${aiResponse.status}: ${errBody}`;
-                        // If 429 (rate limit) or 503 (busy), try next model
-                        if (aiResponse.status === 429 || aiResponse.status === 503 || aiResponse.status === 404) {
-                            console.warn(`OpenCode model ${modelName} returned ${aiResponse.status}, falling back...`);
-                            continue;
-                        }
-                        break;
+                        lastOpenCodeError = `HTTP ${aiResponse.status} (${modelName}): ${errBody}`;
+                        console.warn(`OpenCode model ${modelName} returned ${aiResponse.status}, falling back to next model...`);
+                        continue;
                     }
                 } catch (fetchErr) {
                     lastOpenCodeError = fetchErr.message;
+                    continue;
                 }
             }
 
