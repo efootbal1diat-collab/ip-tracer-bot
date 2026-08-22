@@ -1,10 +1,10 @@
 {
     "subnet": "172.16.250",
-    "last_updated": "2026-08-22T07:14:04+07:00",
-    "last_updated_human": "22 Agustus 2026, 07:14:04 WIB",
+    "last_updated": "2026-08-22T07:21:49+07:00",
+    "last_updated_human": "22 Agustus 2026, 07:21:49 WIB",
     "summary": {
         "total_ips": 254,
-        "online_count": 113,
+        "online_count": 136,
         "free_available_ips": 44,
         "active_unmapped_anomalies": 5
     },
@@ -68,13 +68,13 @@
         {
             "ip_suffix": 4,
             "full_ip": "172.16.250.4",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 2,
             "hostname": "VEEAM-P1",
             "device_type": "SERVER",
-            "mac_address": null,
+            "mac_address": "08:94:EF:F5:51:20",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [
                 445,
                 135
@@ -83,7 +83,7 @@
             "excel_user": null,
             "excel_windows": "SERVER",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 5,
@@ -96,9 +96,9 @@
             "vendor": "Fortinet Technologies",
             "probable_device": "Fortigate Firewall \/ Gateway",
             "open_ports": [
+                445,
                 135,
-                3389,
-                445
+                3389
             ],
             "excel_machine": "DC-01",
             "excel_user": null,
@@ -109,13 +109,13 @@
         {
             "ip_suffix": 6,
             "full_ip": "172.16.250.6",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": "KIAS-DC02",
             "device_type": "SERVER",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "00:15:5D:59:4B:31",
+            "vendor": "Microsoft Corporation",
+            "probable_device": "Hyper-V Virtual Machine Server",
             "open_ports": [
                 445,
                 135
@@ -124,7 +124,7 @@
             "excel_user": null,
             "excel_windows": "SERVER",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 7,
@@ -197,19 +197,19 @@
         {
             "ip_suffix": 11,
             "full_ip": "172.16.250.11",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "Unknown",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:74:10:6B:FC:46",
+            "vendor": "Cisco Systems",
+            "probable_device": "Network Equipment Cisco Catalyst",
             "open_ports": [],
             "excel_machine": "CISCO",
             "excel_user": null,
             "excel_windows": null,
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 12,
@@ -257,12 +257,17 @@
             "full_ip": "172.16.250.14",
             "is_online": true,
             "response_time_ms": 1,
-            "hostname": null,
+            "hostname": "KIAS1-AV",
             "device_type": "SERVER",
             "mac_address": "8C:84:74:EC:EB:8A",
             "vendor": null,
             "probable_device": "Perangkat Jaringan (Unmapped MAC)",
-            "open_ports": [],
+            "open_ports": [
+                445,
+                135,
+                80,
+                3389
+            ],
             "excel_machine": "F-Secure",
             "excel_user": null,
             "excel_windows": "SERVER",
@@ -306,19 +311,19 @@
         {
             "ip_suffix": 17,
             "full_ip": "172.16.250.17",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "SERVER",
-            "mac_address": null,
+            "mac_address": "A4:00:4E:41:64:D1",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [],
             "excel_machine": "GATEWAY INTERNET LAMA",
             "excel_user": null,
             "excel_windows": "SERVER",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 18,
@@ -342,12 +347,15 @@
             "full_ip": "172.16.250.19",
             "is_online": true,
             "response_time_ms": 1,
-            "hostname": null,
+            "hostname": "KIAS-PC-0449",
             "device_type": "WIN 10",
             "mac_address": "9C:69:D3:80:81:67",
             "vendor": null,
             "probable_device": "Perangkat Jaringan (Unmapped MAC)",
-            "open_ports": [],
+            "open_ports": [
+                445,
+                135
+            ],
             "excel_machine": "KIAS-PC-0054",
             "excel_user": "ALFIAN\/OKY",
             "excel_windows": "WIN 10",
@@ -609,19 +617,19 @@
         {
             "ip_suffix": 34,
             "full_ip": "172.16.250.34",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "Unknown",
-            "mac_address": null,
+            "mac_address": "EC:F4:0C:F4:83:84",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [],
             "excel_machine": "CISCO",
             "excel_user": null,
             "excel_windows": null,
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 35,
@@ -645,12 +653,16 @@
             "full_ip": "172.16.250.36",
             "is_online": true,
             "response_time_ms": 1,
-            "hostname": null,
-            "device_type": "Unknown",
+            "hostname": "DESKTOP-I1UPAF8<00>",
+            "device_type": "Windows PC\/Server",
             "mac_address": "34:5A:60:E6:4B:0C",
             "vendor": "HP Inc.",
             "probable_device": "PC Desktop \/ Workstation HP",
-            "open_ports": [],
+            "open_ports": [
+                445,
+                135,
+                3389
+            ],
             "excel_machine": "PC MC AGV",
             "excel_user": "MC AGV",
             "excel_windows": null,
@@ -677,8 +689,8 @@
         {
             "ip_suffix": 38,
             "full_ip": "172.16.250.38",
-            "is_online": true,
-            "response_time_ms": 4,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": null,
             "device_type": "PRINTER",
             "mac_address": "00:1E:8F:D2:EE:35",
@@ -689,7 +701,7 @@
             "excel_user": "OFFICE PRODUKSI",
             "excel_windows": "PRINTER",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 39,
@@ -715,7 +727,7 @@
             "ip_suffix": 40,
             "full_ip": "172.16.250.40",
             "is_online": true,
-            "response_time_ms": 3,
+            "response_time_ms": 1,
             "hostname": "KIAS-PC-0357",
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:60:BC:CA",
@@ -734,13 +746,13 @@
         {
             "ip_suffix": 41,
             "full_ip": "172.16.250.41",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 2,
             "hostname": "KIAS-PC-0390",
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:6A:DA:40",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [
                 445,
                 135
@@ -749,7 +761,7 @@
             "excel_user": "DONNY  SHE",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 42,
@@ -919,8 +931,8 @@
         {
             "ip_suffix": 51,
             "full_ip": "172.16.250.51",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "D8:5E:D3:DD:81:B9",
@@ -931,7 +943,7 @@
             "excel_user": "REMANDA",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 52,
@@ -961,9 +973,9 @@
             "response_time_ms": null,
             "hostname": "KIAS-PC-0584",
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:60:04:00",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [
                 445,
                 135
@@ -1014,7 +1026,7 @@
             "ip_suffix": 56,
             "full_ip": "172.16.250.56",
             "is_online": true,
-            "response_time_ms": 5,
+            "response_time_ms": 3,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "EC:75:0C:08:99:BB",
@@ -1086,19 +1098,19 @@
         {
             "ip_suffix": 60,
             "full_ip": "172.16.250.60",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 13,
             "hostname": null,
             "device_type": "PRINTER",
-            "mac_address": null,
+            "mac_address": "B0:22:7A:5A:54:66",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [],
             "excel_machine": "HP 107",
             "excel_user": "PRINTER ACCOUNTING",
             "excel_windows": "PRINTER",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 61,
@@ -1137,8 +1149,8 @@
         {
             "ip_suffix": 63,
             "full_ip": "172.16.250.63",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:60:BA:CF",
@@ -1149,13 +1161,13 @@
             "excel_user": "ERIKA",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 64,
             "full_ip": "172.16.250.64",
-            "is_online": true,
-            "response_time_ms": 1,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": "DESKTOP-NSNN19J<00>",
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:5E:B4:22",
@@ -1169,7 +1181,7 @@
             "excel_user": "DIAH",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 65,
@@ -1208,8 +1220,8 @@
         {
             "ip_suffix": 67,
             "full_ip": "172.16.250.67",
-            "is_online": true,
-            "response_time_ms": 8,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": "HP-PURCHASING",
             "device_type": "PRINTER",
             "mac_address": "50:81:40:DA:FE:86",
@@ -1223,7 +1235,7 @@
             "excel_user": "PRINTER PURCHASING",
             "excel_windows": "PRINTER",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 68,
@@ -1262,19 +1274,19 @@
         {
             "ip_suffix": 70,
             "full_ip": "172.16.250.70",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 10",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:6B:81:3A",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0047",
             "excel_user": "SHELLA TRAINING",
             "excel_windows": "WIN 10",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 71,
@@ -1296,8 +1308,8 @@
         {
             "ip_suffix": 72,
             "full_ip": "172.16.250.72",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 10",
             "mac_address": "48:21:0B:6B:7C:C7",
@@ -1308,7 +1320,7 @@
             "excel_user": "SHINTA TRAINING",
             "excel_windows": "WIN 10",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 73,
@@ -1419,7 +1431,7 @@
             "ip_suffix": 79,
             "full_ip": "172.16.250.79",
             "is_online": true,
-            "response_time_ms": 3,
+            "response_time_ms": 14,
             "hostname": null,
             "device_type": "DGS",
             "mac_address": "04:BA:D6:00:05:30",
@@ -1506,8 +1518,8 @@
         {
             "ip_suffix": 84,
             "full_ip": "172.16.250.84",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:60:BB:34",
@@ -1518,13 +1530,13 @@
             "excel_user": "AMARA",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 85,
             "full_ip": "172.16.250.85",
-            "is_online": true,
-            "response_time_ms": 1,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": "KIAS-PC-0386",
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:60:BF:E1",
@@ -1538,7 +1550,7 @@
             "excel_user": "DYAH AYU NCR",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 86,
@@ -1578,7 +1590,7 @@
             "ip_suffix": 88,
             "full_ip": "172.16.250.88",
             "is_online": true,
-            "response_time_ms": 14,
+            "response_time_ms": 2,
             "hostname": null,
             "device_type": "DGS",
             "mac_address": "04:BA:D6:00:43:10",
@@ -1629,7 +1641,7 @@
             "ip_suffix": 91,
             "full_ip": "172.16.250.91",
             "is_online": true,
-            "response_time_ms": 2,
+            "response_time_ms": 8,
             "hostname": null,
             "device_type": "DGS",
             "mac_address": "04:BA:D6:00:43:B0",
@@ -1679,25 +1691,25 @@
         {
             "ip_suffix": 94,
             "full_ip": "172.16.250.94",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:6B:81:C7",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0405",
             "excel_user": "YATIMAH HR",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 95,
             "full_ip": "172.16.250.95",
             "is_online": true,
-            "response_time_ms": 2,
+            "response_time_ms": 3,
             "hostname": null,
             "device_type": "DGS",
             "mac_address": "64:29:43:69:DC:40",
@@ -1713,8 +1725,8 @@
         {
             "ip_suffix": 96,
             "full_ip": "172.16.250.96",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:5E:E5:7D",
@@ -1725,13 +1737,13 @@
             "excel_user": "ARIEL PE",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 97,
             "full_ip": "172.16.250.97",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:5E:C8:60",
@@ -1742,7 +1754,7 @@
             "excel_user": "PC YOGA PE",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 98,
@@ -1833,7 +1845,7 @@
             "ip_suffix": 103,
             "full_ip": "172.16.250.103",
             "is_online": true,
-            "response_time_ms": 2,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIFI",
             "mac_address": "3C:46:A1:29:48:60",
@@ -1917,36 +1929,36 @@
         {
             "ip_suffix": 108,
             "full_ip": "172.16.250.108",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:60:B3:46",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0359",
             "excel_user": "MUSLIM",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 109,
             "full_ip": "172.16.250.109",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 3,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:6D:8A:FC",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0346",
             "excel_user": "ARAN DITIO",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 110,
@@ -1969,7 +1981,7 @@
             "ip_suffix": 111,
             "full_ip": "172.16.250.111",
             "is_online": true,
-            "response_time_ms": 1,
+            "response_time_ms": 6,
             "hostname": "UT-SERVER",
             "device_type": "SERVER",
             "mac_address": "30:9C:23:79:F1:D2",
@@ -1989,8 +2001,8 @@
         {
             "ip_suffix": 112,
             "full_ip": "172.16.250.112",
-            "is_online": true,
-            "response_time_ms": 61,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "00:D4:9E:70:84:6F",
@@ -2001,7 +2013,7 @@
             "excel_user": "PAK ARIS",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 113,
@@ -2057,36 +2069,36 @@
         {
             "ip_suffix": 116,
             "full_ip": "172.16.250.116",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 2,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
+            "mac_address": "88:AE:DD:0E:47:61",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0344",
             "excel_user": "RIDWAN GA",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 117,
             "full_ip": "172.16.250.117",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 2,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
+            "mac_address": "9C:69:D3:74:AF:59",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0061",
             "excel_user": "INTAN SAFITRI",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 118,
@@ -2108,8 +2120,8 @@
         {
             "ip_suffix": 119,
             "full_ip": "172.16.250.119",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 2,
             "hostname": null,
             "device_type": "Unknown",
             "mac_address": "48:21:0B:72:38:2E",
@@ -2120,7 +2132,7 @@
             "excel_user": "PUTRI GA",
             "excel_windows": null,
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 120,
@@ -2145,7 +2157,7 @@
             "ip_suffix": 121,
             "full_ip": "172.16.250.121",
             "is_online": true,
-            "response_time_ms": 1,
+            "response_time_ms": 3,
             "hostname": "DESKTOP-G9CHLHK<00>",
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:6B:7C:40",
@@ -2218,8 +2230,8 @@
         {
             "ip_suffix": 125,
             "full_ip": "172.16.250.125",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 3,
             "hostname": null,
             "device_type": "Unknown",
             "mac_address": "48:21:0B:6A:D6:EF",
@@ -2230,7 +2242,7 @@
             "excel_user": "HAI-V",
             "excel_windows": null,
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 126,
@@ -2255,8 +2267,8 @@
         {
             "ip_suffix": 127,
             "full_ip": "172.16.250.127",
-            "is_online": true,
-            "response_time_ms": 1,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": "KIAS-PC-0330",
             "device_type": "PURCHSING",
             "mac_address": "48:21:0B:5E:B7:EB",
@@ -2270,13 +2282,13 @@
             "excel_user": "NINDI",
             "excel_windows": "PURCHSING",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 128,
             "full_ip": "172.16.250.128",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": "KIAS-PC-0343",
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:5F:FD:50",
@@ -2290,13 +2302,13 @@
             "excel_user": "VISNU",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 129,
             "full_ip": "172.16.250.129",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:58:9C:7D",
@@ -2307,13 +2319,13 @@
             "excel_user": "ANIS",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 130,
             "full_ip": "172.16.250.130",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 10",
             "mac_address": "48:21:0B:6B:80:DB",
@@ -2324,7 +2336,7 @@
             "excel_user": "FELI",
             "excel_windows": "WIN 10",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 131,
@@ -2347,7 +2359,7 @@
             "ip_suffix": 132,
             "full_ip": "172.16.250.132",
             "is_online": true,
-            "response_time_ms": 1,
+            "response_time_ms": 2,
             "hostname": null,
             "device_type": "Unknown",
             "mac_address": "94:18:65:7B:CC:0D",
@@ -2468,8 +2480,8 @@
         {
             "ip_suffix": 139,
             "full_ip": "172.16.250.139",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:60:BA:CE",
@@ -2480,7 +2492,7 @@
             "excel_user": "IIN",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 140,
@@ -2502,8 +2514,8 @@
         {
             "ip_suffix": 141,
             "full_ip": "172.16.250.141",
-            "is_online": true,
-            "response_time_ms": 1,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": "KIAS-PC-0320",
             "device_type": "WIN 11",
             "mac_address": "88:AE:DD:0E:49:1E",
@@ -2517,7 +2529,7 @@
             "excel_user": "JULIA",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 142,
@@ -2541,8 +2553,8 @@
         {
             "ip_suffix": 143,
             "full_ip": "172.16.250.143",
-            "is_online": true,
-            "response_time_ms": 2,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": "KIAS-PC-0020",
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:52:3B:18",
@@ -2556,13 +2568,13 @@
             "excel_user": "ADY",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 144,
             "full_ip": "172.16.250.144",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 3,
             "hostname": null,
             "device_type": "WIN 10",
             "mac_address": "48:21:0B:6B:7F:CB",
@@ -2573,7 +2585,7 @@
             "excel_user": "NADIA",
             "excel_windows": "WIN 10",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 145,
@@ -2654,7 +2666,7 @@
             "ip_suffix": 149,
             "full_ip": "172.16.250.149",
             "is_online": true,
-            "response_time_ms": 1,
+            "response_time_ms": 14,
             "hostname": "KIAS-PC-0364",
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:60:BA:71",
@@ -2677,9 +2689,9 @@
             "response_time_ms": null,
             "hostname": null,
             "device_type": "Unknown",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:6B:80:76",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [],
             "excel_machine": null,
             "excel_user": null,
@@ -2691,7 +2703,7 @@
             "ip_suffix": 151,
             "full_ip": "172.16.250.151",
             "is_online": true,
-            "response_time_ms": 1,
+            "response_time_ms": 2,
             "hostname": "KIAS-PC-0350",
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:60:5F:86",
@@ -2727,19 +2739,19 @@
         {
             "ip_suffix": 153,
             "full_ip": "172.16.250.153",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "18:C0:4D:B3:0C:4C",
+            "vendor": "Cisco Systems, Inc.",
+            "probable_device": "Switch \/ Network Equipment Cisco",
             "open_ports": [],
             "excel_machine": "PC CCTV OFFICE ADMINISTRASI",
             "excel_user": "GA",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 154,
@@ -2815,19 +2827,19 @@
         {
             "ip_suffix": 158,
             "full_ip": "172.16.250.158",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 0.5,
             "hostname": null,
             "device_type": "Unknown",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "60:FF:9E:96:6B:86",
+            "vendor": "Realtek Semiconductor",
+            "probable_device": "PC \/ Laptop Ethernet Card",
             "open_ports": [],
             "excel_machine": null,
             "excel_user": null,
             "excel_windows": null,
-            "is_free_ip": true,
-            "status_category": "free_ip"
+            "is_free_ip": false,
+            "status_category": "active_unmapped"
         },
         {
             "ip_suffix": 159,
@@ -2849,8 +2861,8 @@
         {
             "ip_suffix": 160,
             "full_ip": "172.16.250.160",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": "KIAS-PC-0014",
             "device_type": "WIN 11",
             "mac_address": "D8:5E:D3:D6:5B:B8",
@@ -2864,7 +2876,7 @@
             "excel_user": "PC REPAIR",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 161,
@@ -2889,19 +2901,19 @@
         {
             "ip_suffix": 162,
             "full_ip": "172.16.250.162",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:5F:FC:E3",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0337",
             "excel_user": "YUSTY",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 163,
@@ -2923,8 +2935,8 @@
         {
             "ip_suffix": 164,
             "full_ip": "172.16.250.164",
-            "is_online": true,
-            "response_time_ms": 11,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": null,
             "device_type": "Unknown",
             "mac_address": "60:FF:9E:4C:4A:8C",
@@ -2935,7 +2947,7 @@
             "excel_user": "PAK BAMBANG HR",
             "excel_windows": null,
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 165,
@@ -2975,7 +2987,7 @@
             "ip_suffix": 167,
             "full_ip": "172.16.250.167",
             "is_online": true,
-            "response_time_ms": 5,
+            "response_time_ms": 1,
             "hostname": "KIAS-PC-0035",
             "device_type": "WIN 11",
             "mac_address": "B4:2E:99:64:62:98",
@@ -2993,8 +3005,8 @@
         {
             "ip_suffix": 168,
             "full_ip": "172.16.250.168",
-            "is_online": true,
-            "response_time_ms": 9,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": "KIAS-NB-0021",
             "device_type": "Windows PC\/Server",
             "mac_address": "60:FF:9E:96:B1:00",
@@ -3007,8 +3019,8 @@
             "excel_machine": null,
             "excel_user": null,
             "excel_windows": null,
-            "is_free_ip": false,
-            "status_category": "active_unmapped"
+            "is_free_ip": true,
+            "status_category": "free_ip"
         },
         {
             "ip_suffix": 169,
@@ -3152,7 +3164,7 @@
             "ip_suffix": 177,
             "full_ip": "172.16.250.177",
             "is_online": true,
-            "response_time_ms": 8,
+            "response_time_ms": 3,
             "hostname": "KIAS-PC-0081",
             "device_type": "WIN 11",
             "mac_address": "EC:75:0C:08:E9:D4",
@@ -3221,8 +3233,8 @@
         {
             "ip_suffix": 181,
             "full_ip": "172.16.250.181",
-            "is_online": true,
-            "response_time_ms": 1,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": "KIAS-PC-0454",
             "device_type": "Windows PC\/Server",
             "mac_address": "48:21:0B:6B:7D:9E",
@@ -3236,7 +3248,7 @@
             "excel_user": "ACCOUNTING  BARU",
             "excel_windows": null,
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 182,
@@ -3293,7 +3305,7 @@
             "ip_suffix": 185,
             "full_ip": "172.16.250.185",
             "is_online": true,
-            "response_time_ms": 1,
+            "response_time_ms": 9,
             "hostname": "KIAS-HYPERV02",
             "device_type": "SERVER",
             "mac_address": "6C:92:CF:17:31:F0",
@@ -3348,19 +3360,19 @@
         {
             "ip_suffix": 188,
             "full_ip": "172.16.250.188",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "SERVER",
-            "mac_address": null,
+            "mac_address": "6C:92:CF:17:1C:C1",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [],
             "excel_machine": "KIAS-HYPERV02",
             "excel_user": "SERVER",
             "excel_windows": "SERVER",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 189,
@@ -3471,7 +3483,7 @@
             "ip_suffix": 195,
             "full_ip": "172.16.250.195",
             "is_online": true,
-            "response_time_ms": 2,
+            "response_time_ms": 10,
             "hostname": null,
             "device_type": "DGS",
             "mac_address": "04:BA:D6:00:41:D0",
@@ -3558,8 +3570,8 @@
         {
             "ip_suffix": 200,
             "full_ip": "172.16.250.200",
-            "is_online": true,
-            "response_time_ms": 1,
+            "is_online": false,
+            "response_time_ms": null,
             "hostname": null,
             "device_type": "WIN 11",
             "mac_address": "48:21:0B:57:86:6F",
@@ -3570,7 +3582,7 @@
             "excel_user": "ELISA",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "active_matched"
+            "status_category": "offline_mapped"
         },
         {
             "ip_suffix": 201,
@@ -3592,8 +3604,8 @@
         {
             "ip_suffix": 202,
             "full_ip": "172.16.250.202",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 2,
             "hostname": null,
             "device_type": "WIN 10",
             "mac_address": "48:21:0B:6B:81:69",
@@ -3604,7 +3616,7 @@
             "excel_user": "AFISA",
             "excel_windows": "WIN 10",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 203,
@@ -3885,9 +3897,9 @@
             "response_time_ms": null,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
+            "mac_address": "60:E9:AA:BB:36:5D",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0354",
             "excel_user": "PC STANDING",
@@ -3898,25 +3910,25 @@
         {
             "ip_suffix": 220,
             "full_ip": "172.16.250.220",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 3,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "DC:45:46:BD:1B:31",
+            "vendor": "Lenovo",
+            "probable_device": "PC \/ Laptop Lenovo ThinkPad",
             "open_ports": [],
             "excel_machine": null,
             "excel_user": "Erika",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 221,
             "full_ip": "172.16.250.221",
             "is_online": true,
-            "response_time_ms": 14,
+            "response_time_ms": 1,
             "hostname": null,
             "device_type": "WIN 10",
             "mac_address": "74:56:3C:81:E5:E0",
@@ -4187,19 +4199,19 @@
         {
             "ip_suffix": 237,
             "full_ip": "172.16.250.237",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 2,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "48:21:0B:60:63:1A",
+            "vendor": "Intel Corporate",
+            "probable_device": "PC \/ Laptop (Intel NIC)",
             "open_ports": [],
             "excel_machine": "KIAS-PC-0351",
             "excel_user": "ADIT",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 238,
@@ -4238,19 +4250,19 @@
         {
             "ip_suffix": 240,
             "full_ip": "172.16.250.240",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 4,
             "hostname": null,
             "device_type": "WIN 11",
-            "mac_address": null,
-            "vendor": null,
-            "probable_device": null,
+            "mac_address": "60:FF:9E:96:C4:A8",
+            "vendor": "Realtek Semiconductor",
+            "probable_device": "PC \/ Laptop Ethernet Card",
             "open_ports": [],
             "excel_machine": "KIAS-NB-0020",
             "excel_user": "IVAN SHE",
             "excel_windows": "WIN 11",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 241,
