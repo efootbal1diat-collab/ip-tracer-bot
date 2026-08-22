@@ -183,6 +183,22 @@ PRINSIP KERJA: 100% TRANSPARAN, LENGKAP & TO-THE-POINT (NO GATEKEEPING)
                 });
             }
         } else {
+            // Use custom / OpenCode / OpenAI-compatible endpoint
+            let targetBaseUrl = AI_API_BASE_URL || 'https://api.openai.com/v1';
+            if (!targetBaseUrl.startsWith('http://') && !targetBaseUrl.startsWith('https://')) {
+                targetBaseUrl = `https://${targetBaseUrl}`;
+            }
+
+            const finalUrl = targetBaseUrl.endsWith('/chat/completions')
+                ? targetBaseUrl
+                : `${targetBaseUrl}/chat/completions`;
+
+            const messages = [
+                { role: 'system', content: systemPrompt },
+                ...history.slice(-6).map((h) => ({ role: h.role, content: h.content })),
+                { role: 'user', content: message.trim() }
+            ];
+
             const fallbackOpenCodeModels = Array.from(new Set([
                 AI_MODEL || 'mimo-v2.5-free',
                 'mimo-v2.5-free',
