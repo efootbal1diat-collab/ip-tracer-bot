@@ -934,7 +934,7 @@
             progressBar.style.width = '2%';
             statusText.innerText = 'Memulai ping...';
             progressDetail.innerText = '';
-            const CHUNK = 8;
+            const CHUNK = 4;
             try {
                 for (let i = start; i <= end; i += CHUNK) {
                     const chunkEnd = Math.min(i + CHUNK - 1, end);
@@ -968,6 +968,7 @@
                     progressBar.style.width = `${Math.min(pct, 99)}%`;
                     statusText.innerText = `${pct}% — ${scanned}/${total} IP (${totalOnline} Online)`;
                     progressDetail.innerText = `{{ $activeSubnet }}.${i} - .${chunkEnd}`;
+                    await new Promise(r => setTimeout(r, 40));
                 }
                 progressBar.style.width = '100%';
                 statusText.innerText = `Ping selesai! ${total} IP dicek, ${totalOnline} aktif.`;

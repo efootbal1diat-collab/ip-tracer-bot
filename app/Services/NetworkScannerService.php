@@ -953,24 +953,30 @@ class NetworkScannerService
      */
     public function pingOnly(string $ip): array
     {
-        // ── Step 1: Fast ICMP Ping (500ms timeout) ──
-        $result = $this->execWithTimeout("ping -n 1 -w 500 {$ip}", 1);
+        // ── Step 1: Fast ICMP Ping (800ms ping timeout, 2s process timeout) ──
+        $result = $this->execWithTimeout("ping -n 1 -w 800 {$ip}", 2);
         $parsed = $this->parsePingOutput($result['output']);
         $isActive = $parsed['online'];
         $responseTime = $parsed['response_time_ms'] ?? null;
 
         // ── Step 2: Fallback TCP port probe if ping is offline (firewall bypass) ──
         if (! $isActive) {
-            $ports = $this->asyncPortScan($ip, [445, 135, 80, 9100, 3389], 0.25);
+            $ports = $this->asyncPortScan($ip, [445, 135, 80, 9100, 3389], 0.3);
             if (! empty($ports)) {
                 $isActive = true;
-                $responseTime = 0.5;
+                $responseTime = 1.0;
             }
         }
 
         // ── Step 3: Immediate ARP table lookup for the IP (warmed by ping/TCP) ──
         $arpTable = $this->getArpTable();
         $macAddress = $arpTable[$ip] ?? null;
+
+        // ── Step 4: Triple-Check — If MAC exists in ARP cache, the device IS ONLINE ──
+        if (! $isActive && ! empty($macAddress)) {
+            $isActive = true;
+            $responseTime = $responseTime ?? 1.0;
+        }
 
         return [
             'ip' => $ip,
