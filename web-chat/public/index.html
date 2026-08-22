@@ -318,23 +318,43 @@
             color: #e2e8f0;
         }
 
+        /* Responsive Table for Mobile Screen */
+        .table-responsive-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 10px 0;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(15, 23, 42, 0.65);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
         .bubble table {
             width: 100%;
+            min-width: 280px;
             border-collapse: collapse;
-            margin: 10px 0;
             font-size: 12px;
         }
 
         .bubble th, .bubble td {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 6px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 8px 10px;
             text-align: left;
+            white-space: nowrap;
         }
 
         .bubble th {
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(56, 189, 248, 0.15);
             color: #38bdf8;
             font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bubble tr:nth-child(even) td {
+            background: rgba(255, 255, 255, 0.02);
         }
 
         .bubble strong {
@@ -620,7 +640,11 @@
 
         function appendAiMessage(markdownText, timeStr) {
             const time = timeStr || new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            const parsedHtml = marked.parse(markdownText);
+            let parsedHtml = typeof marked !== 'undefined' ? marked.parse(markdownText) : markdownText;
+            parsedHtml = parsedHtml
+                .replace(/<table>/g, '<div class="table-responsive-wrapper"><table>')
+                .replace(/<\/table>/g, '</table></div>');
+
             const row = document.createElement('div');
             row.className = 'message-row ai';
             row.innerHTML = `

@@ -84,10 +84,16 @@ ${summaryStr}
 === DAFTAR DATA IP (1-254) ===
 ${ipRecordsStr}
 
-Instruksi Tugas:
+Instruksi Tugas & Format Jawaban Mobile:
 1. Jawab pertanyaan user mengenai status IP, nama pemegang/user, mesin/device, merk vendor, port, atau alokasi IP kosong dengan akurat berdasarkan data di atas.
 2. Jika user meminta IP kosong, prioritaskan memberikan IP yang bertanda [BEBAS/KOSONG] (status offline dan belum terdaftar di inventaris).
-3. Buat jawaban yang terstruktur rapi, elegan, gunakan format Markdown (tabel jika relevan, bullet points •, teks tebal), dan ramah dibaca di layar HP.`;
+3. PENTING - FORMAT TAMPILAN HP: User membaca melalui layar HP yang sempit.
+   - UTAMAKAN format **List Kartu Ringkas (Bullet Points •)** daripada tabel lebar.
+   - Contoh format list yang sangat disukai:
+     • **172.16.250.25** | 🟢 ONLINE
+       - User: Budi (Accounting)
+       - Device: PC-DELL (Intel NIC)
+   - Jika membuat tabel, buat tabel ringkas (maksimal 3 kolom) agar teks tidak gepeng/tumpuk.`;
 
         // Check if Google Key (starts with AIza...)
         const isGoogleKey = AI_API_KEY.startsWith('AIza');
