@@ -202,9 +202,9 @@ PRINSIP KERJA: 100% TRANSPARAN, LENGKAP & TO-THE-POINT (NO GATEKEEPING)
             const fallbackOpenCodeModels = Array.from(new Set([
                 AI_MODEL || 'mimo-v2.5-free',
                 'mimo-v2.5-free',
-                'mimo-v2-pro-free',
-                'mimo-v2-omni-free',
-                'gpt-4o-mini'
+                'opencode/big-pickle',
+                'big-pickle',
+                'big-pickle-free'
             ]));
 
             let lastOpenCodeError = null;
