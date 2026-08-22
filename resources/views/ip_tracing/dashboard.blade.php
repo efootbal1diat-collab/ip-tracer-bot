@@ -1790,11 +1790,12 @@
             text.innerText = 'Pushing...';
 
             try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
                 const response = await fetch('{{ route("ip.github.sync") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': getCsrfToken()
+                        'X-CSRF-TOKEN': csrfToken
                     }
                 });
 
