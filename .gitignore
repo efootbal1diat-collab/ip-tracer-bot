@@ -32,4 +32,8 @@ Thumbs.db
 /cloud-wa-bot/wa_auth
 /cloud-wa-bot/.env
 cloudflared.exe
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/cache/*
+
 

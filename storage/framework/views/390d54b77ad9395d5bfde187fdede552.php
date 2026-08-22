@@ -154,6 +154,10 @@
                     <i class="fa-solid fa-network-wired" id="btnBatchMacIcon"></i>
                     <span id="btnBatchMacText">MAC + Vendor</span>
                 </button>
+                <button onclick="triggerGithubSync()" id="btnSyncGithub" class="btn-google px-4 py-2 text-sm flex items-center gap-2 shadow-sm bg-slate-800 hover:bg-slate-900 text-white font-medium transition" title="Ekspor data IP terbaru dan upload ke GitHub">
+                    <i class="fa-brands fa-github text-white" id="btnSyncGithubIcon"></i>
+                    <span id="btnSyncGithubText">Push GitHub</span>
+                </button>
                 <button onclick="toggleAiChat(true)" id="btnOpenAiCopilotHeader" class="btn-google px-4 py-2 text-sm flex items-center gap-2 shadow-sm bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-semibold">
                     <i class="fa-solid fa-robot text-yellow-300"></i>
                     <span>AI Copilot</span>
@@ -1773,6 +1777,138 @@
                 input.focus();
             }
         }
+
+        // ──────────────────────────────────────────────
+        //  GITHUB DATA SYNC & SUCCESS MODAL POP-UP
+        // ──────────────────────────────────────────────
+        let isGithubSyncRunning = false;
+
+        async function triggerGithubSync() {
+            if (isGithubSyncRunning) return;
+            isGithubSyncRunning = true;
+
+            const btn = document.getElementById('btnSyncGithub');
+            const icon = document.getElementById('btnSyncGithubIcon');
+            const text = document.getElementById('btnSyncGithubText');
+
+            const originalText = text.innerText;
+            btn.disabled = true;
+            icon.className = 'fa-solid fa-spinner fa-spin text-white';
+            text.innerText = 'Pushing...';
+
+            try {
+                const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '<?php echo e(csrf_token()); ?>';
+                const response = await fetch('<?php echo e(route("ip.github.sync")); ?>', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showGithubSyncSuccessModal(data);
+                } else {
+                    alert('⚠️ Gagal sync ke GitHub:\n' + (data.message || 'Terjadi kesalahan'));
+                }
+            } catch (err) {
+                alert('⚠️ Koneksi terputus saat sync ke GitHub: ' + err.message);
+            } finally {
+                isGithubSyncRunning = false;
+                btn.disabled = false;
+                icon.className = 'fa-brands fa-github text-white';
+                text.innerText = originalText;
+            }
+        }
+
+        function showGithubSyncSuccessModal(data) {
+            const modal = document.getElementById('githubSyncModal');
+            const card = document.getElementById('githubSyncModalCard');
+
+            document.getElementById('syncStatOnline').innerText = data.summary?.online_count || '0';
+            document.getElementById('syncStatFree').innerText = data.summary?.free_available_ips || '0';
+            document.getElementById('syncStatAnomaly').innerText = data.summary?.active_unmapped_anomalies || '0';
+            document.getElementById('syncTimestamp').innerText = data.last_updated || new Date().toLocaleString('id-ID');
+
+            if (data.repo) {
+                const repoLink = document.getElementById('syncRepoLink');
+                repoLink.innerText = data.repo;
+                repoLink.href = data.repo_url || `https://github.com/${data.repo}`;
+            }
+
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                card.classList.remove('scale-95', 'opacity-0');
+                card.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closeGithubSyncModal() {
+            const modal = document.getElementById('githubSyncModal');
+            const card = document.getElementById('githubSyncModalCard');
+
+            card.classList.remove('scale-100', 'opacity-100');
+            card.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
     </script>
+
+    <!-- GitHub Sync Success Modal Popup -->
+    <div id="githubSyncModal" class="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-xs hidden transition-opacity duration-200" onclick="if(event.target === this) closeGithubSyncModal()">
+        <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 max-w-md w-full mx-4 overflow-hidden transform transition-all duration-200 scale-95 opacity-0" id="githubSyncModalCard">
+            <div class="p-6 text-center space-y-4">
+                <div class="w-16 h-16 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center mx-auto text-3xl shadow-xs animate-bounce">
+                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                </div>
+                <div class="space-y-1">
+                    <h3 class="text-lg font-bold text-gray-900">Data Berhasil Di-push ke GitHub! 🎉</h3>
+                    <p class="text-xs text-gray-500">Snapshot data IP (Excel + Scan) telah ter-update otomatis di cloud repository.</p>
+                </div>
+
+                <!-- Summary Stats Grid -->
+                <div class="grid grid-cols-3 gap-2 p-3 bg-slate-50 border border-slate-100 rounded-2xl text-center text-xs">
+                    <div class="p-1">
+                        <div class="font-bold text-emerald-600 text-base" id="syncStatOnline">113</div>
+                        <div class="text-[10px] text-gray-500 font-medium">Online</div>
+                    </div>
+                    <div class="p-1">
+                        <div class="font-bold text-blue-600 text-base" id="syncStatFree">44</div>
+                        <div class="text-[10px] text-gray-500 font-medium">IP Kosong</div>
+                    </div>
+                    <div class="p-1">
+                        <div class="font-bold text-amber-600 text-base" id="syncStatAnomaly">5</div>
+                        <div class="text-[10px] text-gray-500 font-medium">Anomali</div>
+                    </div>
+                </div>
+
+                <!-- Links Info -->
+                <div class="text-left bg-blue-50/70 border border-blue-100 rounded-2xl p-3.5 space-y-2.5 text-xs">
+                    <div class="flex items-center justify-between text-blue-900 font-medium">
+                        <span><i class="fa-brands fa-github mr-1 text-slate-700"></i> Repository:</span>
+                        <a id="syncRepoLink" href="https://github.com/efootbal1diat-collab/ip-tracer-bot" target="_blank" class="text-blue-600 hover:underline font-mono text-[11px] font-semibold truncate max-w-[200px]">ip-tracer-bot</a>
+                    </div>
+                    <div class="flex items-center justify-between text-blue-900 font-medium">
+                        <span><i class="fa-solid fa-mobile-screen mr-1 text-indigo-600"></i> Mobile Web App:</span>
+                        <a href="https://ip-tracer-bot.vercel.app" target="_blank" class="text-indigo-600 hover:underline font-mono text-[11px] font-semibold">ip-tracer-bot.vercel.app</a>
+                    </div>
+                    <div class="text-[10px] text-gray-500 pt-1.5 border-t border-blue-100/80 flex items-center justify-between">
+                        <span>Waktu Sync:</span>
+                        <span id="syncTimestamp" class="font-semibold text-gray-700">22 Agustus 2026</span>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="pt-2">
+                    <button onclick="closeGithubSyncModal()" class="w-full py-3 px-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-semibold shadow-sm transition active:scale-95">
+                        Tutup
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html><?php /**PATH C:\laragon\www\app-ip-tracer\resources\views/ip_tracing/dashboard.blade.php ENDPATH**/ ?>
