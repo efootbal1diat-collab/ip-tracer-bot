@@ -1,10 +1,10 @@
 {
     "subnet": "172.16.250",
-    "last_updated": "2026-08-22T07:21:49+07:00",
-    "last_updated_human": "22 Agustus 2026, 07:21:49 WIB",
+    "last_updated": "2026-08-22T07:25:22+07:00",
+    "last_updated_human": "22 Agustus 2026, 07:25:22 WIB",
     "summary": {
         "total_ips": 254,
-        "online_count": 136,
+        "online_count": 137,
         "free_available_ips": 44,
         "active_unmapped_anomalies": 5
     },
@@ -912,13 +912,13 @@
         {
             "ip_suffix": 50,
             "full_ip": "172.16.250.50",
-            "is_online": false,
-            "response_time_ms": null,
+            "is_online": true,
+            "response_time_ms": 1,
             "hostname": "KIAS-PC-0604",
             "device_type": "WIN 10",
-            "mac_address": null,
+            "mac_address": "10:FF:E0:E3:77:5D",
             "vendor": null,
-            "probable_device": null,
+            "probable_device": "Perangkat Jaringan (Unmapped MAC)",
             "open_ports": [
                 445
             ],
@@ -926,7 +926,7 @@
             "excel_user": "SERVER",
             "excel_windows": "WIN 10",
             "is_free_ip": false,
-            "status_category": "offline_mapped"
+            "status_category": "active_matched"
         },
         {
             "ip_suffix": 51,
