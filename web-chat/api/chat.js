@@ -183,49 +183,55 @@ PRINSIP KERJA: 100% TRANSPARAN, LENGKAP & TO-THE-POINT (NO GATEKEEPING)
                 });
             }
         } else {
-            // Use custom / OpenCode / OpenAI-compatible endpoint
-            let targetBaseUrl = AI_API_BASE_URL || 'https://api.openai.com/v1';
-            if (!targetBaseUrl.startsWith('http://') && !targetBaseUrl.startsWith('https://')) {
-                targetBaseUrl = `https://${targetBaseUrl}`;
+            const fallbackOpenCodeModels = Array.from(new Set([
+                AI_MODEL || 'mimo-v2.5-free',
+                'mimo-v2.5-free',
+                'mimo-v2-pro-free',
+                'mimo-v2-omni-free',
+                'gpt-4o-mini'
+            ]));
+
+            let lastOpenCodeError = null;
+
+            for (const modelName of fallbackOpenCodeModels) {
+                try {
+                    const aiResponse = await fetch(finalUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${AI_API_KEY}`,
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            model: modelName,
+                            messages,
+                            stream: false
+                        }),
+                        signal: AbortSignal.timeout(45000)
+                    });
+
+                    if (aiResponse.ok) {
+                        const aiData = await aiResponse.json();
+                        replyText = aiData?.choices?.[0]?.message?.content || 'Analisis selesai.';
+                        lastOpenCodeError = null;
+                        break;
+                    } else {
+                        const errBody = await aiResponse.text();
+                        lastOpenCodeError = `HTTP ${aiResponse.status}: ${errBody}`;
+                        // If 429 (rate limit) or 503 (busy), try next model
+                        if (aiResponse.status === 429 || aiResponse.status === 503 || aiResponse.status === 404) {
+                            console.warn(`OpenCode model ${modelName} returned ${aiResponse.status}, falling back...`);
+                            continue;
+                        }
+                        break;
+                    }
+                } catch (fetchErr) {
+                    lastOpenCodeError = fetchErr.message;
+                }
             }
 
-            const finalUrl = targetBaseUrl.endsWith('/chat/completions')
-                ? targetBaseUrl
-                : `${targetBaseUrl}/chat/completions`;
-
-            const messages = [
-                { role: 'system', content: systemPrompt },
-                ...history.slice(-6).map((h) => ({ role: h.role, content: h.content })),
-                { role: 'user', content: message.trim() }
-            ];
-
-            try {
-                const aiResponse = await fetch(finalUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${AI_API_KEY}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        model: AI_MODEL || 'gpt-4o-mini',
-                        messages,
-                        stream: false
-                    }),
-                    signal: AbortSignal.timeout(45000)
-                });
-
-                if (!aiResponse.ok) {
-                    const errBody = await aiResponse.text();
-                    return res.status(500).json({
-                        error: `Gagal dari API (${finalUrl} - HTTP ${aiResponse.status}): ${errBody.substring(0, 300)}`
-                    });
-                }
-
-                const aiData = await aiResponse.json();
-                replyText = aiData?.choices?.[0]?.message?.content || 'Analisis selesai.';
-            } catch (fetchErr) {
+            if (lastOpenCodeError && !replyText) {
                 return res.status(500).json({
-                    error: `Gagal menghubungi endpoint AI (${finalUrl}): ${fetchErr.message}. Pastikan AI_API_BASE_URL dan koneksi internet endpoint valid.`
+                    error: `Gagal dari API (${finalUrl}): ${lastOpenCodeError.substring(0, 350)}`
                 });
             }
         }
