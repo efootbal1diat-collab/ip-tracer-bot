@@ -25,5 +25,9 @@ Route::post('/excel/update', [IpTracingController::class, 'updateExcel'])->name(
 Route::post('/ai/diagnose', [IpAiController::class, 'diagnoseSingleIp'])->name('ip.ai.diagnose');
 Route::post('/ai/chat', [IpAiController::class, 'chat'])->name('ip.ai.chat');
 
+// GitHub Data Sync
+Route::post('/github/sync', [IpTracingController::class, 'syncGithub'])->name('ip.github.sync');
+
 // Microsoft Teams Webhook Route
 Route::post('/api/teams/webhook', [TeamsWebhookController::class, 'handle'])->name('teams.webhook');
+

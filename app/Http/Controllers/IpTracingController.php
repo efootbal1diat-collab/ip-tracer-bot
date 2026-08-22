@@ -415,4 +415,39 @@ class IpTracingController extends Controller
             'message' => $success ? "Data Excel untuk IP {$subnet}.{$request->ip_suffix} berhasil diperbarui!" : 'Gagal mengupdate Excel.',
         ]);
     }
+
+    /**
+     * Sync and push IP snapshot data to GitHub
+     */
+    public function syncGithub(Request $request)
+    {
+        try {
+            $exitCode = \Illuminate\Support\Facades\Artisan::call('ip:sync-github');
+            $output = \Illuminate\Support\Facades\Artisan::output();
+
+            $jsonPath = base_path('ip_data.json');
+            $data = file_exists($jsonPath) ? json_decode(file_get_contents($jsonPath), true) : null;
+            $repo = env('GITHUB_REPO', 'efootbal1diat-collab/ip-tracer-bot');
+
+            return response()->json([
+                'success' => $exitCode === 0,
+                'message' => $exitCode === 0 ? 'Data IP berhasil diekspor dan diunggah ke GitHub!' : 'Gagal sinkronisasi data ke GitHub.',
+                'raw_output' => $output,
+                'repo' => $repo,
+                'repo_url' => "https://github.com/{$repo}",
+                'last_updated' => $data['last_updated_human'] ?? now()->format('d F Y, H:i:s').' WIB',
+                'summary' => $data['summary'] ?? [
+                    'total_ips' => 254,
+                    'online_count' => 0,
+                    'free_available_ips' => 0,
+                    'active_unmapped_anomalies' => 0,
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan: '.$e->getMessage(),
+            ], 500);
+        }
+    }
 }

@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'ai/*',
             'scan/*',
             'excel/*',
+            'github/*',
             'api/teams/*',
         ]);
     })
