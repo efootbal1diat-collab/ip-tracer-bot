@@ -38,16 +38,24 @@ export default async function handler(req, res) {
     }
 
     try {
-        // 1. Fetch latest IP data snapshot from GitHub
+        // 1. Fetch latest IP data snapshot from GitHub (bypassing CDN 5-minute cache)
         let ipData = null;
         try {
-            const rawUrl = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/ip_data.json`;
-            const headers = { 'User-Agent': 'IP-Tracer-Vercel-AI' };
+            const timestamp = Date.now();
+            const rawUrl = `https://raw.githubusercontent.com/${GITHUB_REPO}/main/ip_data.json?_t=${timestamp}`;
+            const headers = {
+                'User-Agent': 'IP-Tracer-Vercel-AI',
+                'Cache-Control': 'no-cache, no-store, must-revalidate',
+                'Pragma': 'no-cache'
+            };
             if (GITHUB_TOKEN) {
                 headers['Authorization'] = `token ${GITHUB_TOKEN}`;
             }
 
-            const fetchRes = await fetch(rawUrl, { headers });
+            const fetchRes = await fetch(rawUrl, {
+                headers,
+                cache: 'no-store'
+            });
             if (fetchRes.ok) {
                 ipData = await fetchRes.json();
             }

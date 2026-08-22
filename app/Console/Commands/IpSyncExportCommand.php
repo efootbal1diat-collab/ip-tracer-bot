@@ -31,7 +31,7 @@ class IpSyncExportCommand extends Command
     public function handle(): int
     {
         $subnet = $this->option('subnet') ?: config('app.ip_subnets.0', '172.16.250');
-        $repo = $this->option('repo') ?: env('GITHUB_REPO', 'efootball1diat-collab/ip-tracer-bot');
+        $repo = $this->option('repo') ?: env('GITHUB_REPO', 'efootbal1diat-collab/ip-tracer-bot');
         $token = $this->option('token') ?: env('GITHUB_TOKEN');
         $localOnly = (bool) $this->option('local-only');
 
