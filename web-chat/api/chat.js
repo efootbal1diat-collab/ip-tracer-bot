@@ -77,7 +77,8 @@ export default async function handler(req, res) {
                     const machine = r.excel_machine ? `Machine:${r.excel_machine}` : '';
                     const vendor = r.vendor ? `Vendor:${r.vendor}` : '';
                     const free = r.is_free_ip ? '[BEBAS/KOSONG]' : '';
-                    return `${r.full_ip} | ${status} | ${user} | ${machine} | ${vendor} | ${free}`.replace(/\s+\|\s+$/g, '');
+                    const anomaly = (r.is_online && (!r.excel_user || r.excel_user === 'Kosong') && !r.excel_machine) ? '[ANOMALI_AKTIF_TANPA_EXCEL]' : '';
+                    return `${r.full_ip} | ${status} | ${user} | ${machine} | ${vendor} | ${free} | ${anomaly}`.replace(/\s+\|\s+$/g, '');
                 })
                 .join('\n');
         }
@@ -93,13 +94,17 @@ ${summaryStr}
 ${ipRecordsStr}
 
 Instruksi Tugas & Format Jawaban Mobile:
-1. Jawab pertanyaan user mengenai status IP, nama pemegang/user, mesin/device, merk vendor, port, atau alokasi IP kosong dengan akurat berdasarkan data di atas.
-2. Jika user meminta IP kosong, prioritaskan memberikan IP yang bertanda [BEBAS/KOSONG] (status offline dan belum terdaftar di inventaris).
-3. PENTING - WAKTU & STATUS TERKINI:
+1. Jawab pertanyaan user mengenai status IP, nama pemegang/user, mesin/device, merk vendor, port, alokasi IP kosong, atau anomali dengan akurat.
+2. LANGSUNG BERIKAN DAFTAR RINCIAN (PROAKTIF):
+   - Jika user bertanya tentang "Anomali", "IP Kosong", "Printer", atau grup perangkat, JANGAN HANYA MENJAWAB JUMLAH/ANGKANYA!
+   - LANGSUNG sebutkan dan daftarkan IP mana saja secara rinci (IP, MAC/Vendor, Hostname/Device) dalam format list kartu agar user langsung mendapat jawaban lengkap tanpa perlu bertanya dua kali.
+3. Anomali adalah IP yang berstatus ONLINE dan bertanda [ANOMALI_AKTIF_TANPA_EXCEL] (perangkat hidup di jaringan tetapi belum tercatat di inventaris Excel).
+4. Jika user meminta IP kosong, prioritaskan memberikan IP yang bertanda [BEBAS/KOSONG] (status offline dan belum terdaftar di inventaris).
+5. PENTING - WAKTU & STATUS TERKINI:
    - Waktu snapshot data resmi terbaru saat ini adalah: ${ipData?.last_updated_human || 'Baru saja di-update'}.
-   - Jumlah perangkat online saat ini: ${ipData?.summary?.online_count || 0} IP Online, ${ipData?.summary?.free_available_ips || 0} IP Kosong.
+   - Jumlah perangkat online saat ini: ${ipData?.summary?.online_count || 0} IP Online, ${ipData?.summary?.free_available_ips || 0} IP Kosong, ${ipData?.summary?.active_unmapped_anomalies || 0} Anomali.
    - Abaikan waktu lama yang mungkin ada di percakapan sebelumnya.
-4. FORMAT TAMPILAN HP: User membaca melalui layar HP yang sempit.
+6. FORMAT TAMPILAN HP: User membaca melalui layar HP yang sempit.
    - UTAMAKAN format **List Kartu Ringkas (Bullet Points •)** daripada tabel lebar.
    - Contoh format list yang sangat disukai:
      • **172.16.250.25** | 🟢 ONLINE
