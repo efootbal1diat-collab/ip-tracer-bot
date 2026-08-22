@@ -95,7 +95,11 @@ ${ipRecordsStr}
 Instruksi Tugas & Format Jawaban Mobile:
 1. Jawab pertanyaan user mengenai status IP, nama pemegang/user, mesin/device, merk vendor, port, atau alokasi IP kosong dengan akurat berdasarkan data di atas.
 2. Jika user meminta IP kosong, prioritaskan memberikan IP yang bertanda [BEBAS/KOSONG] (status offline dan belum terdaftar di inventaris).
-3. PENTING - FORMAT TAMPILAN HP: User membaca melalui layar HP yang sempit.
+3. PENTING - WAKTU & STATUS TERKINI:
+   - Waktu snapshot data resmi terbaru saat ini adalah: ${ipData?.last_updated_human || 'Baru saja di-update'}.
+   - Jumlah perangkat online saat ini: ${ipData?.summary?.online_count || 0} IP Online, ${ipData?.summary?.free_available_ips || 0} IP Kosong.
+   - Abaikan waktu lama yang mungkin ada di percakapan sebelumnya.
+4. FORMAT TAMPILAN HP: User membaca melalui layar HP yang sempit.
    - UTAMAKAN format **List Kartu Ringkas (Bullet Points •)** daripada tabel lebar.
    - Contoh format list yang sangat disukai:
      • **172.16.250.25** | 🟢 ONLINE

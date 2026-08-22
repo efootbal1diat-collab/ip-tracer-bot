@@ -477,7 +477,7 @@
             <div class="brand-icon">🤖</div>
             <div class="brand-text">
                 <h1>AI Network Copilot</h1>
-                <p><span class="status-dot"></span> GitHub Live Sync</p>
+                <p id="headerStatusText"><span class="status-dot"></span> GitHub Live Sync</p>
             </div>
         </div>
         <div class="header-actions">
@@ -609,6 +609,15 @@
 
                 const data = await response.json();
                 appendAiMessage(data.reply, data.timestamp);
+
+                // Update live header subtitle
+                if (data.last_updated) {
+                    const headerSub = document.getElementById('headerStatusText');
+                    if (headerSub) {
+                        const count = data.summary?.online_count ? `${data.summary.online_count} Online` : 'Live';
+                        headerSub.innerHTML = `<span class="status-dot"></span> Sync: ${data.last_updated.replace(/2026,\s*/, '')} (${count})`;
+                    }
+                }
 
                 // Update history
                 chatHistory.push({ role: 'user', content: text });
