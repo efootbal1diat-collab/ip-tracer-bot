@@ -953,18 +953,18 @@ class NetworkScannerService
      */
     public function pingOnly(string $ip): array
     {
-        // ── Step 1: Fast ICMP Ping (800ms ping timeout, 2s process timeout) ──
-        $result = $this->execWithTimeout("ping -n 1 -w 800 {$ip}", 2);
+        // ── Step 1: 2-Packet ICMP Ping (1st packet warms ARP/NIC, 2nd packet guarantees reply) ──
+        $result = $this->execWithTimeout("ping -n 2 -w 400 {$ip}", 2);
         $parsed = $this->parsePingOutput($result['output']);
         $isActive = $parsed['online'];
         $responseTime = $parsed['response_time_ms'] ?? null;
 
-        // ── Step 2: Fallback TCP port probe if ping is offline (firewall bypass) ──
+        // ── Step 2: Fallback TCP port probe (includes Port 4370 for Mesin Absensi/Biometrik) ──
         if (! $isActive) {
-            $ports = $this->asyncPortScan($ip, [445, 135, 80, 9100, 3389], 0.3);
+            $ports = $this->asyncPortScan($ip, [4370, 80, 445, 8080, 8000, 135, 9100, 3389, 5005], 0.3);
             if (! empty($ports)) {
                 $isActive = true;
-                $responseTime = 1.0;
+                $responseTime = $responseTime ?? 1.0;
             }
         }
 

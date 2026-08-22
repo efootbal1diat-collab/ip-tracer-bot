@@ -90,6 +90,14 @@ class MacVendorLookupService
         '08:00:27' => ['vendor' => 'Oracle VirtualBox', 'device' => 'VirtualBox Virtual Machine'],
         '52:54:00' => ['vendor' => 'QEMU / KVM / Proxmox', 'device' => 'Proxmox / KVM Virtual Machine'],
 
+        // Biometrics / Attendance Machine (ZKTeco, Solution, Fingerspot, Hikvision Biometric)
+        '00:17:61' => ['vendor' => 'ZKTeco Inc.', 'device' => 'Mesin Absensi / Biometric Terminal'],
+        'E8:AB:FA' => ['vendor' => 'ZKTeco Inc.', 'device' => 'Mesin Absensi Fingerprint ZKTeco'],
+        '00:0B:7B' => ['vendor' => 'ZKTeco / Solution', 'device' => 'Mesin Absensi Solution / Fingerprint'],
+        '08:94:EF' => ['vendor' => 'Supermicro Computer', 'device' => 'Server IPMI/BMC Management'],
+        '00:25:90' => ['vendor' => 'Supermicro Computer', 'device' => 'Server Motherboard / IPMI Supermicro'],
+        '70:B3:D5' => ['vendor' => 'IoT Terminal', 'device' => 'Mesin Absensi / IoT Smart Device'],
+
         // Storage / NAS / CCTV / NVR
         '00:11:32' => ['vendor' => 'Synology Incorporated', 'device' => 'NAS Storage Server Synology'],
         '00:11:34' => ['vendor' => 'Synology Incorporated', 'device' => 'NAS Storage Server Synology'],
