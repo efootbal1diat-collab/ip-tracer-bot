@@ -199,14 +199,12 @@ PRINSIP KERJA: 100% TRANSPARAN, LENGKAP & TO-THE-POINT (NO GATEKEEPING)
                 { role: 'user', content: message.trim() }
             ];
 
-            let preferredModel = AI_MODEL && AI_MODEL !== 'opencode/big-pickle' ? AI_MODEL : 'mimo-v2.5-free';
-            if (preferredModel === 'opencode/big-pickle') preferredModel = 'big-pickle';
+            let preferredModel = AI_MODEL || 'mimo-v2.5-free';
 
             const fallbackOpenCodeModels = Array.from(new Set([
                 preferredModel,
                 'mimo-v2.5-free',
-                'big-pickle',
-                'mimo-v2.5'
+                'big-pickle'
             ]));
 
             let lastOpenCodeError = null;
