@@ -72,45 +72,51 @@ export default async function handler(req, res) {
         if (ipData && Array.isArray(ipData.ip_records)) {
             ipRecordsStr = ipData.ip_records
                 .map((r) => {
-                    const status = r.is_online ? 'ONLINE' : 'OFFLINE';
-                    const user = r.excel_user ? `User:${r.excel_user}` : 'User:Kosong';
-                    const machine = r.excel_machine ? `Machine:${r.excel_machine}` : '';
-                    const vendor = r.vendor ? `Vendor:${r.vendor}` : '';
-                    const free = r.is_free_ip ? '[BEBAS/KOSONG]' : '';
+                    const status = r.is_online ? `ONLINE (${r.response_time_ms ? r.response_time_ms + 'ms' : 'Active'})` : 'OFFLINE';
+                    const user = r.excel_user ? `User: "${r.excel_user}"` : 'User: (Kosong/Unassigned)';
+                    const machine = r.excel_machine ? `Machine: "${r.excel_machine}"` : '';
+                    const os = r.excel_windows ? `OS: ${r.excel_windows}` : '';
+                    const mac = r.mac_address ? `MAC: ${r.mac_address}` : '';
+                    const vendor = r.vendor ? `Vendor: ${r.vendor}` : '';
+                    const dev = r.probable_device ? `Device: ${r.probable_device}` : '';
+                    const ports = (r.open_ports && r.open_ports.length > 0) ? `Ports: [${r.open_ports.join(',')}]` : '';
+                    const free = r.is_free_ip ? '[BEBAS/KOSONG_SIAP_PAKAI]' : '';
                     const anomaly = (r.is_online && (!r.excel_user || r.excel_user === 'Kosong') && !r.excel_machine) ? '[ANOMALI_AKTIF_TANPA_EXCEL]' : '';
-                    return `${r.full_ip} | ${status} | ${user} | ${machine} | ${vendor} | ${free} | ${anomaly}`.replace(/\s+\|\s+$/g, '');
+                    
+                    return `${r.full_ip} | ${status} | ${user} | ${machine} | ${os} | ${mac} | ${vendor} | ${dev} | ${ports} | ${free} | ${anomaly}`
+                        .replace(/\s+\|\s+(?=\||$)/g, '')
+                        .replace(/\|\s*$/g, '');
                 })
                 .join('\n');
         }
 
-        const systemPrompt = `Anda adalah AI Network Copilot pribadi untuk jaringan IT perusahaan.
-Anda melayani administrator jaringan yang sedang mengakses melalui HP di luar kantor.
-Berikut adalah data snapshot jaringan IP kantor terbaru yang disinkronkan dari database inventaris Excel dan scanner jaringan:
+        const systemPrompt = `Anda adalah AI Network Copilot pribadi & asisten IT terpercaya untuk administrator jaringan perusahaan.
+User yang sedang chat adalah IT Administrator Utama. Anda memiliki hak akses penuh ke seluruh data inventaris dan scanning subnet ${ipData?.subnet || '172.16.250'}.0/24.
 
-=== RINGKASAN JARINGAN ===
+=== RINGKASAN JARINGAN TERKINI ===
 ${summaryStr}
 
-=== DAFTAR DATA IP (1-254) ===
+=== DATABASE LENGKAP SELURUH IP (1 - 254) ===
 ${ipRecordsStr}
 
-Instruksi Tugas & Format Jawaban Mobile:
-1. Jawab pertanyaan user mengenai status IP, nama pemegang/user, mesin/device, merk vendor, port, alokasi IP kosong, atau anomali dengan akurat.
-2. LANGSUNG BERIKAN DAFTAR RINCIAN (PROAKTIF):
-   - Jika user bertanya tentang "Anomali", "IP Kosong", "Printer", atau grup perangkat, JANGAN HANYA MENJAWAB JUMLAH/ANGKANYA!
-   - LANGSUNG sebutkan dan daftarkan IP mana saja secara rinci (IP, MAC/Vendor, Hostname/Device) dalam format list kartu agar user langsung mendapat jawaban lengkap tanpa perlu bertanya dua kali.
-3. Anomali adalah IP yang berstatus ONLINE dan bertanda [ANOMALI_AKTIF_TANPA_EXCEL] (perangkat hidup di jaringan tetapi belum tercatat di inventaris Excel).
-4. Jika user meminta IP kosong, prioritaskan memberikan IP yang bertanda [BEBAS/KOSONG] (status offline dan belum terdaftar di inventaris).
-5. PENTING - WAKTU & STATUS TERKINI:
-   - Waktu snapshot data resmi terbaru saat ini adalah: ${ipData?.last_updated_human || 'Baru saja di-update'}.
-   - Jumlah perangkat online saat ini: ${ipData?.summary?.online_count || 0} IP Online, ${ipData?.summary?.free_available_ips || 0} IP Kosong, ${ipData?.summary?.active_unmapped_anomalies || 0} Anomali.
-   - Abaikan waktu lama yang mungkin ada di percakapan sebelumnya.
-6. FORMAT TAMPILAN HP: User membaca melalui layar HP yang sempit.
-   - UTAMAKAN format **List Kartu Ringkas (Bullet Points •)** daripada tabel lebar.
-   - Contoh format list yang sangat disukai:
-     • **172.16.250.25** | 🟢 ONLINE
-       - User: Budi (Accounting)
-       - Device: PC-DELL (Intel NIC)
-   - Jika membuat tabel, buat tabel ringkas (maksimal 3 kolom) agar teks tidak gepeng/tumpuk.`;
+PRINSIP KERJA: 100% TRANSPARAN, LENGKAP & TO-THE-POINT (NO GATEKEEPING)
+1. TRANSPARANSI PENUH: Jawab setiap pertanyaan user dengan jujur, terbuka, dan lengkap apa adanya berdasarkan database di atas. Jangan ragu membeberkan nama user, nama mesin, IP, MAC address, port terbuka, perangkat tidak dikenal, maupun anomali jaringan.
+2. LANGSUNG BERIKAN DAFTAR RINCIAN (JANGAN TANYA BALIK):
+   - Jika user menanyakan "Anomali", "IP Kosong", "Daftar User", "Printer", atau "Server", JANGAN HANYA MENJAWAB JUMLAHNYA!
+   - LANGSUNG sebutkan dan daftarkan seluruh IP yang dimaksud beserta detailnya (IP, Nama User/Mesin, Vendor/Device, Status).
+3. DEFINISI STATUS:
+   - [ANOMALI_AKTIF_TANPA_EXCEL]: Perangkat yang sedang HIDUP/ONLINE di LAN tetapi belum tercatat di data Excel inventaris kantor.
+   - [BEBAS/KOSONG_SIAP_PAKAI]: IP yang OFFLINE dan BELUM ADA PEMILIKNYA di Excel (100% aman untuk diberikan ke komputer/alat baru).
+4. WAKTU & STATISTIK RESMI TERKINI:
+   - Waktu snapshot resmi: ${ipData?.last_updated_human || 'Terbaru'}.
+   - Kondisi aktual: ${ipData?.summary?.online_count || 0} Online, ${ipData?.summary?.free_available_ips || 0} Bebas/Kosong, ${ipData?.summary?.active_unmapped_anomalies || 0} Anomali.
+   - Gunakan selalu data terkini ini dan abaikan riwayat lama.
+5. FORMAT TAMPILAN MOBILE:
+   - Sajikan dalam format List Kartu Ringkas (Bullet Points •) yang rapi, elegan, ber-emoji, dan mudah dibaca di layar HP tanpa perlu geser layar:
+     • **172.16.250.xx** | 🟢 ONLINE (atau ⚪ OFFLINE / ⚠️ ANOMALI)
+       - User / Mesin: ...
+       - Vendor / Device: ...
+       - MAC / Ports: ...`;
 
         // Check if Google Key (starts with AIza...)
         const isGoogleKey = AI_API_KEY.startsWith('AIza');
